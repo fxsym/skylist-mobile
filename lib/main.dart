@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skylist_mobile/providers/todo_provider.dart';
 import 'package:skylist_mobile/providers/user_provider.dart'; // Import provider
 import 'package:skylist_mobile/screens/home_screen.dart';
 import 'package:skylist_mobile/screens/register_screen.dart';
@@ -10,7 +11,8 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()), // Daftarkan UserProvider
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => TodoProvider()), // Daftarkan UserProvider
       ],
       child: MyApp(),
     ),

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skylist_mobile/models/todo_model.dart';
 import 'package:skylist_mobile/models/user_model.dart';
+import 'package:skylist_mobile/providers/todo_provider.dart';
 import 'package:skylist_mobile/providers/user_provider.dart';
 
 class AuthService {
@@ -34,7 +36,6 @@ class AuthService {
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        // Simpan token ke SharedPreferences
         final prefs = await SharedPreferences.getInstance();
         final token = responseData['token'];
         await prefs.setString('token', token);
@@ -43,6 +44,12 @@ class AuthService {
         final userData = responseData['user'];
         final user = UserModel.fromJson(userData);
         Provider.of<UserProvider>(context, listen: false).setUser(user);
+
+        // Simpan todo_post ke provider (jika ada)
+        final todoJson = userData['todo_post'] ?? [];
+        final todos =
+            (todoJson as List).map((t) => TodoModel.fromJson(t)).toList();
+        Provider.of<TodoProvider>(context, listen: false).setTodos(todos);
 
         return responseData;
       } else {
