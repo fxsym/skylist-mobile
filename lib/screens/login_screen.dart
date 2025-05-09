@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../services/auth_service.dart'; // ganti path sesuai
 import '../services/device_service.dart'; // ganti path sesuai
 import 'register_screen.dart';
@@ -25,8 +24,16 @@ class _LoginScreenState extends State<LoginScreen> {
       final username = _emailController.text.trim();
       final password = _passwordController.text.trim();
       final device = await getDeviceName();
+
       print('Username: $username, Password: $password, Device: $device');
-      final result = await AuthService.login(username, password, device);
+
+      // Kirim context ke AuthService.login (pastikan login menerima context)
+      final result = await AuthService.login(
+        context,
+        username,
+        password,
+        device,
+      );
 
       if (result.containsKey('token')) {
         Navigator.pushReplacementNamed(context, '/dashboard');
