@@ -24,19 +24,19 @@ class TodoStatusSection extends StatelessWidget {
           title: 'Not Started',
           count: notStartedCount,
           color: Colors.red.shade400,
-          image: 'assets/images/not_started.png', // sesuaikan path asset
+          image: 'assets/images/list.png', // sesuaikan path asset
         ),
         TodoStatusCard(
           title: 'In Progress',
           count: inProgressCount,
           color: Colors.lightBlue.shade400,
-          image: 'assets/images/in_progress.png',
+          image: 'assets/images/history.png',
         ),
         TodoStatusCard(
           title: 'Completed',
           count: completedCount,
           color: Colors.green.shade400,
-          image: 'assets/images/completed.png',
+          image: 'assets/images/CheckedThick.png',
         ),
       ],
     );

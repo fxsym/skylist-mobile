@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
+import 'package:skylist_mobile/components/todo_list_section.dart';
 import 'package:skylist_mobile/components/todo_status_section.dart';
 import 'package:skylist_mobile/models/todo_model.dart';
 import 'package:skylist_mobile/providers/todo_provider.dart';
@@ -115,18 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
 
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: todos.length > 5 ? 5 : todos.length,
-              itemBuilder: (context, index) {
-                final todo = todos[index];
-                return ListTile(
-                  title: Text(todo.title),
-                  subtitle: Text(todo.status),
-                );
-              },
-            ),
+            TodoListWidget(todos: todos, maxItems: 5),
 
             const SizedBox(height: 24),
 
