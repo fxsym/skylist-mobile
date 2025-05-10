@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:skylist_mobile/providers/todo_provider.dart';
 import 'package:skylist_mobile/providers/user_provider.dart'; // Import provider
 import 'package:skylist_mobile/screens/home_screen.dart';
+import 'package:skylist_mobile/screens/main_layout_screen.dart';
 import 'package:skylist_mobile/screens/register_screen.dart';
 import 'package:skylist_mobile/screens/login_screen.dart';
 import 'package:skylist_mobile/screens/dashboard_screen.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterScreen(),
         '/home': (context) => HomeScreen(),
         '/dashboard': (context) => DashboardScreen(),
+        '/main': (context) => MainLayout()
       },
     );
   }

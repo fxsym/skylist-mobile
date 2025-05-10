@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (result.containsKey('token')) {
-        Navigator.pushReplacementNamed(context, '/dashboard');
+        Navigator.pushReplacementNamed(context, '/main');
       } else {
         setState(() {
           _errorMessage = result['message'] ?? 'Login gagal';
