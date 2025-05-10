@@ -8,13 +8,14 @@ import 'package:skylist_mobile/screens/register_screen.dart';
 import 'package:skylist_mobile/screens/login_screen.dart';
 import 'package:skylist_mobile/screens/dashboard_screen.dart';
 import 'package:skylist_mobile/screens/splash_screen.dart';
+import 'package:skylist_mobile/screens/todo_screen.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => TodoProvider()), // Daftarkan UserProvider
+        ChangeNotifierProvider(create: (_) => TodoProvider()),
       ],
       child: MyApp(),
     ),
@@ -35,7 +36,19 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterScreen(),
         '/home': (context) => HomeScreen(),
         '/dashboard': (context) => DashboardScreen(),
-        '/main': (context) => MainLayout()
+        '/main': (context) => MainLayout(),
+      },
+      onGenerateRoute: (settings) {
+        final uri = Uri.parse(settings.name ?? '');
+        if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'todo') {
+          final todoId = uri.pathSegments[1]; // Ambil ID dari URL
+          return MaterialPageRoute(
+            builder:
+                (context) =>
+                    TodoScreen(todoId: todoId), // Kirim ID ke TodoScreen
+          );
+        }
+        return null; // Kembalikan null jika tidak ditemukan rute
       },
     );
   }
