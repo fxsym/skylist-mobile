@@ -51,6 +51,13 @@ class AuthService {
             (todoJson as List).map((t) => TodoModel.fromJson(t)).toList();
         Provider.of<TodoProvider>(context, listen: false).setTodos(todos);
 
+        await prefs.setString('user', jsonEncode(userData));
+        await prefs.setString('todos', jsonEncode(todoJson));
+
+        // Verifikasi penyimpanan
+        print('User saved: ${jsonEncode(userData)}');
+        print('Todos saved: ${jsonEncode(todoJson)}');
+
         return responseData;
       } else {
         throw responseData;
@@ -87,5 +94,30 @@ class AuthService {
     } catch (error) {
       throw {"message": "Logout gagal", "details": error.toString()};
     }
+  }
+
+  static Future<bool> restoreSession(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    final userJson = prefs.getString('user');
+    final todosJson = prefs.getString('todos');
+
+    if (token != null && userJson != null && todosJson != null) {
+      final userData = jsonDecode(userJson);
+      final todoData = jsonDecode(todosJson);
+
+      final user = UserModel.fromJson(userData);
+      final todos =
+          (todoData as List).map((t) => TodoModel.fromJson(t)).toList();
+
+      Provider.of<UserProvider>(context, listen: false).setUser(user);
+      Provider.of<TodoProvider>(
+        context,
+        listen: false,
+      ).setTodos(todos); // Pastikan ini benar
+
+      return true;
+    }
+    return false;
   }
 }

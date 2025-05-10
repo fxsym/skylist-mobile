@@ -7,6 +7,7 @@ import 'package:skylist_mobile/screens/main_layout_screen.dart';
 import 'package:skylist_mobile/screens/register_screen.dart';
 import 'package:skylist_mobile/screens/login_screen.dart';
 import 'package:skylist_mobile/screens/dashboard_screen.dart';
+import 'package:skylist_mobile/screens/splash_screen.dart';
 
 void main() {
   runApp(
@@ -27,8 +28,9 @@ class MyApp extends StatelessWidget {
       title: 'My Flutter App',
       theme: ThemeData(primarySwatch: Colors.blue),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/splash',
       routes: {
+        '/splash': (context) => SplashScreen(),
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
         '/home': (context) => HomeScreen(),
