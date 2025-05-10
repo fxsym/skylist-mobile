@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skylist_mobile/providers/todo_provider.dart';
 import 'package:skylist_mobile/providers/user_provider.dart'; // Import provider
+import 'package:skylist_mobile/screens/add_todo_screen.dart';
 import 'package:skylist_mobile/screens/home_screen.dart';
 import 'package:skylist_mobile/screens/main_layout_screen.dart';
 import 'package:skylist_mobile/screens/register_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomeScreen(),
         '/dashboard': (context) => DashboardScreen(),
         '/main': (context) => MainLayout(),
+        '/add-todo': (context) => AddTodoScreen(),
       },
       onGenerateRoute: (settings) {
         final uri = Uri.parse(settings.name ?? '');

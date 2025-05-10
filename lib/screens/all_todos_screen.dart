@@ -163,7 +163,7 @@ class _AllTodosScreenState extends State<AllTodosScreen> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // TODO: Navigate to Add-Todo screen
+                Navigator.pushNamed(context, '/add-todo');
               },
               child: const Text('Add New Todo'),
             ),
