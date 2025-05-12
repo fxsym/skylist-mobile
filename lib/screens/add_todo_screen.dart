@@ -45,14 +45,13 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
       }
 
       try {
-        final response = await TodoService().createTodo(
+        await TodoService().createTodo(
           titleController.text,
           descriptionController.text,
           status,
           categories,
         );
 
-        print(response);
         // Jika berhasil, ambil data todos terbaru
         final todos = await TodoService().getTodos();
 
