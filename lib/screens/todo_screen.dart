@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:skylist_mobile/models/todo_model.dart';
 import 'package:skylist_mobile/screens/edit_todo_screen.dart';
+import 'package:skylist_mobile/services/todo_services.dart';
 
 class TodoScreen extends StatelessWidget {
   final String todoId;
@@ -12,7 +13,7 @@ class TodoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<TodoModel?>(
-      future: _getTodoById(context, todoId),
+      future: _getTodoById(todoId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
@@ -118,7 +119,7 @@ class TodoScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // Categories Section
+                // Categories
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -152,7 +153,7 @@ class TodoScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // Description Section
+                // Description
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -213,13 +214,10 @@ class TodoScreen extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Delete action
-                        },
+                        onPressed: () => _handleDelete(context, todo.id),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red.shade400,
-                          foregroundColor:
-                              Colors.white, // This makes the text white
+                          foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -238,10 +236,9 @@ class TodoScreen extends StatelessWidget {
     );
   }
 
-  Future<TodoModel?> _getTodoById(BuildContext context, String todoId) async {
+  Future<TodoModel?> _getTodoById(String todoId) async {
     final prefs = await SharedPreferences.getInstance();
     final todosJson = prefs.getString('todos');
-
     if (todosJson == null) return null;
 
     final List<dynamic> todosList = jsonDecode(todosJson);
@@ -252,6 +249,27 @@ class TodoScreen extends StatelessWidget {
       return todos.firstWhere((todo) => todo.id.toString() == todoId);
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<void> _handleDelete(BuildContext context, int todoId) async {
+    try {
+      await TodoService().deleteTodo(todoId);
+
+      // Ambil data terbaru
+      final todos = await TodoService().getTodos();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('todos', jsonEncode(todos));
+
+      Navigator.pushNamed(context, '/main');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Todo deleted successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Delete failed: $e')));
     }
   }
 

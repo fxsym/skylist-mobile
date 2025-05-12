@@ -106,9 +106,10 @@ class TodoService {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
+      final link = '$API_URL/todo/$todoId';
 
       final response = await http.delete(
-        Uri.parse('$API_URL/todo/$todoId'),
+        Uri.parse(link),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -118,7 +119,9 @@ class TodoService {
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        throw Exception('Failed to delete todo');
+        throw Exception(
+          'Failed to delete todo: ${response.statusCode} - ${response.body}',
+        );
       }
     } catch (error) {
       throw Exception('Error: $error');
