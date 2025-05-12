@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:skylist_mobile/models/todo_model.dart';
+import 'package:skylist_mobile/screens/edit_todo_screen.dart';
 
 class TodoScreen extends StatelessWidget {
   final String todoId;
@@ -187,7 +188,14 @@ class TodoScreen extends StatelessWidget {
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
-                          // Edit action
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) =>
+                                      EditTodoScreen(todoData: todo.toJson()),
+                            ),
+                          );
                         },
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),

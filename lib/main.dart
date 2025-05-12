@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomeScreen(),
         '/dashboard': (context) => DashboardScreen(),
         '/main': (context) => MainLayout(),
-        '/add-todo': (context) => AddTodoScreen(),
+        '/add-todo': (context) => AddTodoScreen()
       },
       onGenerateRoute: (settings) {
         final uri = Uri.parse(settings.name ?? '');

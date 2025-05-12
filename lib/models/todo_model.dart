@@ -10,7 +10,15 @@ class CategoryModel {
       categoriesName: json['categories_name'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'categories_name': categoriesName,
+    };
+  }
 }
+
 
 class TodoModel {
   final int id;
@@ -43,4 +51,16 @@ class TodoModel {
       categories: categoryList,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'status': status,
+      'created_at': createdAt,
+      'categories': categories.map((c) => c.toJson()).toList(),
+    };
+  }
 }
+
