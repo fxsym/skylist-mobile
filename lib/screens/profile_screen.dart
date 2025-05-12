@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skylist_mobile/services/auth_service.dart';
 import 'package:skylist_mobile/services/user_service.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -118,11 +119,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile"),
-        centerTitle: true,
-        elevation: 0,
-      ),
       body:
           _isLoading
               ? const Center(child: CircularProgressIndicator())
@@ -360,6 +356,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 child: const Text("Change Password"),
+                              ),
+                              const SizedBox(height: 20),
+
+                              /// Logout
+                              Center(
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    try {
+                                      await AuthService.logout();
+                                      Navigator.pushReplacementNamed(
+                                        context,
+                                        '/login',
+                                      );
+                                    } catch (error) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text('Logout gagal: $error'),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: const Text('Logout'),
+                                ),
                               ),
                             ],
                           ),

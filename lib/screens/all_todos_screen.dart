@@ -160,15 +160,23 @@ class _AllTodosScreenState extends State<AllTodosScreen> {
               TodoListWidget(todos: filteredTodos),
 
             // ---------- ADD BUTTON ----------
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/add-todo');
-              },
-              child: const Text('Add New Todo'),
-            ),
+            // const SizedBox(height: 16),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     Navigator.pushNamed(context, '/add-todo');
+            //   },
+            //   child: const Text('Add New Todo'),
+            // ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/add-todo');
+        },
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.add),
       ),
     );
   }

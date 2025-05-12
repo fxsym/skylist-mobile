@@ -17,14 +17,28 @@ class TodoScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Todo Details')),
+            appBar: AppBar(
+              title: Text('To-do Details'),
+              backgroundColor: Colors.blue[400],
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
             body: const Center(child: CircularProgressIndicator()),
           );
         }
 
         if (!snapshot.hasData) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Todo Details')),
+            appBar: AppBar(
+              title: Text('To-do Details'),
+              backgroundColor: Colors.blue[400],
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
             body: const Center(child: Text('Todo not found')),
           );
         }
@@ -34,12 +48,10 @@ class TodoScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Todo Details'),
-            backgroundColor: theme.primaryColor,
-            elevation: 0,
+            title: Text('To-do Details'),
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () => Navigator.pushReplacementNamed(context, '/main'),
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
             ),
           ),
           body: SingleChildScrollView(
@@ -136,15 +148,13 @@ class TodoScreen extends StatelessWidget {
                       children:
                           todo.categories.map((category) {
                             return Chip(
-                              backgroundColor: theme.primaryColor.withOpacity(
-                                0.2,
-                              ),
+                              backgroundColor: Colors.blue[400],
                               label: Text(
                                 category.categoriesName,
-                                style: TextStyle(color: theme.primaryColor),
+                                style: TextStyle(color: Colors.white),
                               ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(16),
                               ),
                             );
                           }).toList(),
@@ -167,10 +177,11 @@ class TodoScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
+                      height: 200,
                       decoration: BoxDecoration(
                         color: Colors.grey.shade50,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade200),
+                        border: Border.all(color: Colors.black),
                       ),
                       child: Text(
                         todo.description,
@@ -200,14 +211,14 @@ class TodoScreen extends StatelessWidget {
                         },
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          side: BorderSide(color: theme.primaryColor),
+                          side: BorderSide(color: Colors.blue),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Text(
                           'Edit',
-                          style: TextStyle(color: theme.primaryColor),
+                          style: TextStyle(color: Colors.blue[400]),
                         ),
                       ),
                     ),

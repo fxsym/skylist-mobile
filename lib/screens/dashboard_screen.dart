@@ -56,7 +56,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final completed = todos.where((t) => t.status == 'Completed').length;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Dashboard'), centerTitle: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
@@ -119,27 +118,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             TodoListWidget(todos: todos, maxItems: 5),
 
             const SizedBox(height: 24),
-
-            /// Logout
-            Center(
-              child: ElevatedButton(
-                onPressed: () async {
-                  try {
-                    await AuthService.logout();
-                    Provider.of<TodoProvider>(
-                      context,
-                      listen: false,
-                    ).clearTodos();
-                    Navigator.pushReplacementNamed(context, '/login');
-                  } catch (error) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Logout gagal: $error')),
-                    );
-                  }
-                },
-                child: const Text('Logout'),
-              ),
-            ),
           ],
         ),
       ),

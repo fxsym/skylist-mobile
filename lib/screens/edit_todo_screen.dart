@@ -108,7 +108,6 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit to-do'),
-        backgroundColor: Colors.blue[400],
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
@@ -203,6 +202,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                 child: Text('Update'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue[400],
+                  foregroundColor: Colors.white,
                   minimumSize: Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),

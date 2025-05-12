@@ -82,7 +82,6 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create new to-do'),
-        backgroundColor: Colors.blue[400],
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
@@ -180,6 +179,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                 onPressed: handleSubmit,
                 child: Text('Create'),
                 style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
                   backgroundColor:
                       Colors
                           .blue[400], // Use backgroundColor instead of primary
