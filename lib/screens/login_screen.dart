@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart'; // ganti path sesuai
-import '../services/device_service.dart'; // ganti path sesuai
+import '../services/auth_service.dart';
+import '../services/device_service.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,6 +13,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
+  bool _obscurePassword = true;
 
   Future<void> _handleLogin() async {
     setState(() {
@@ -25,9 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
       final password = _passwordController.text.trim();
       final device = await getDeviceName();
 
-      print('Username: $username, Password: $password, Device: $device');
-
-      // Kirim context ke AuthService.login (pastikan login menerima context)
       final result = await AuthService.login(
         context,
         username,
@@ -39,18 +37,21 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacementNamed(context, '/main');
       } else {
         setState(() {
-          _errorMessage = result['message'] ?? 'Login gagal';
+          _errorMessage =
+              result['message'] ?? 'Login failed. Please try again.';
         });
       }
     } catch (e) {
       setState(() {
         _errorMessage =
-            e is Map<String, dynamic> ? e['message'] : 'Login gagal';
+            e is Map<String, dynamic>
+                ? e['message']
+                : 'An error occurred during login';
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(_errorMessage ?? 'Terjadi kesalahan'),
-          backgroundColor: Colors.red,
+          content: Text(_errorMessage ?? 'An error occurred'),
+          backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
     } finally {
@@ -62,120 +63,212 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final isLargeScreen = MediaQuery.of(context).size.width > 800;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child:
-              isLargeScreen
-                  ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(width: 500, child: _buildLoginForm(context)),
-                      const SizedBox(width: 50),
-                      Image.asset(
-                        'assets/images/AccountCreated.jpg',
-                        width: 350,
-                        fit: BoxFit.contain,
-                      ),
-                    ],
-                  )
-                  : _buildLoginForm(context),
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 1200),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(24),
+              child:
+                  isLargeScreen
+                      ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 48),
+                              child: _buildLoginForm(theme),
+                            ),
+                          ),
+                          SizedBox(width: 48),
+                          Flexible(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset(
+                                'assets/images/AccountCreated.jpg',
+                                width: 400,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                      : _buildLoginForm(theme),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildLoginForm(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Login to your account",
-          style: Theme.of(
-            context,
-          ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          "You must have an account first to be able to log in. Log in and save the activities you will do, access from anywhere and anytime.",
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
-        ),
-        const SizedBox(height: 32),
-        if (_errorMessage != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Text(_errorMessage!, style: TextStyle(color: Colors.red)),
+  Widget _buildLoginForm(ThemeData theme) {
+    return Container(
+      constraints: BoxConstraints(maxWidth: 500),
+      padding: EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: Offset(0, 4),
           ),
-        TextField(
-          controller: _emailController,
-          decoration: InputDecoration(
-            labelText: 'Insert your username',
-            border: OutlineInputBorder(),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Login",
+            style: theme.textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue[400],
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
-        TextField(
-          controller: _passwordController,
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'Insert your password',
-            border: OutlineInputBorder(),
+          SizedBox(height: 8),
+          Text(
+            "You must have an account first to be able to log in. Log in and save the activities you will do, access from anywhere and anytime.",
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.7),
+            ),
           ),
-        ),
-        const SizedBox(height: 24),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: Colors.lightBlue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+          SizedBox(height: 32),
+
+          if (_errorMessage != null)
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.errorContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                _errorMessage!,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onErrorContainer,
+                ),
               ),
             ),
-            onPressed: _isLoading ? null : _handleLogin,
-            child:
-                _isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Login', style: TextStyle(fontSize: 18)),
-          ),
-        ),
-        const SizedBox(height: 24),
-        Row(
-          children: [
-            Expanded(child: Divider(color: Colors.grey[400])),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text("Or"),
+
+          if (_errorMessage != null) SizedBox(height: 16),
+
+          TextFormField(
+            controller: _emailController,
+            decoration: InputDecoration(
+              labelText: 'Username or Email',
+              prefixIcon: Icon(Icons.person_outline),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              filled: true,
+              fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.3),
             ),
-            Expanded(child: Divider(color: Colors.grey[400])),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Center(
-          child: TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => RegisterScreen()),
-              );
-            },
-            child: const Text(
-              "Don't have an account? Create Account",
-              style: TextStyle(
-                color: Colors.lightBlue,
-                decoration: TextDecoration.underline,
+            keyboardType: TextInputType.emailAddress,
+          ),
+          SizedBox(height: 16),
+
+          TextFormField(
+            controller: _passwordController,
+            obscureText: _obscurePassword,
+            decoration: InputDecoration(
+              labelText: 'Password',
+              prefixIcon: Icon(Icons.lock_outline),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed:
+                    () => setState(() => _obscurePassword = !_obscurePassword),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              filled: true,
+              fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.3),
+            ),
+          ),
+          SizedBox(height: 8),
+
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: _isLoading ? null : _handleLogin,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue[400],
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 2,
+              ),
+              child:
+                  _isLoading
+                      ? CircularProgressIndicator(
+                        color: theme.colorScheme.onPrimary,
+                      )
+                      : Text(
+                        'Login',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white, // set text color to white
+                        ),
+                      ),
+            ),
+          ),
+          SizedBox(height: 24),
+
+          Row(
+            children: [
+              Expanded(child: Divider(color: theme.colorScheme.outline)),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  'OR',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.outline,
+                  ),
+                ),
+              ),
+              Expanded(child: Divider(color: theme.colorScheme.outline)),
+            ],
+          ),
+          SizedBox(height: 24),
+
+          Center(
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => RegisterScreen()),
+                );
+              },
+              child: RichText(
+                text: TextSpan(
+                  text: "Don't have an account? ",
+                  style: theme.textTheme.bodyMedium,
+                  children: [
+                    TextSpan(
+                      text: "Sign up",
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: Colors.blue[400],
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

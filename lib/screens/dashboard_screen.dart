@@ -6,7 +6,6 @@ import 'package:skylist_mobile/components/todo_list_section.dart';
 import 'package:skylist_mobile/components/todo_status_section.dart';
 import 'package:skylist_mobile/models/todo_model.dart';
 import 'package:skylist_mobile/providers/todo_provider.dart';
-import '../services/auth_service.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
