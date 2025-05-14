@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final isLoggedIn = await AuthService.restoreSession(context);
 
     if (isLoggedIn) {
-      Navigator.pushReplacementNamed(context, '/dashboard');
+      Navigator.pushReplacementNamed(context, '/main');
     } else {
       Navigator.pushReplacementNamed(context, '/');
     }

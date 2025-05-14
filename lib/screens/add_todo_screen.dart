@@ -91,8 +91,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey, // Wrapping with Form widget
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               TextFormField(
                 controller: titleController,
