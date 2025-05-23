@@ -20,6 +20,18 @@ class _AllTodosScreenState extends State<AllTodosScreen> {
   bool loading = false;
   bool searchLoading = false;
 
+  final List<Map<String, dynamic>> dataCategories = [
+    {'label': 'Task', 'value': 1},
+    {'label': 'Work', 'value': 2},
+    {'label': 'Study', 'value': 3},
+    {'label': 'Personal', 'value': 4},
+    {'label': 'Money', 'value': 5},
+    {'label': 'Social', 'value': 6},
+    {'label': 'Health', 'value': 7},
+    {'label': 'Hobby', 'value': 8},
+    {'label': 'Productivity', 'value': 9},
+  ];
+
   @override
   Widget build(BuildContext context) {
     final todos = context.watch<TodoProvider>().todos;
@@ -96,15 +108,15 @@ class _AllTodosScreenState extends State<AllTodosScreen> {
                   value: selectedCategory.isEmpty ? null : selectedCategory,
                   hint: const Text('Choose Category'),
                   onChanged: (v) => setState(() => selectedCategory = v ?? ''),
-                  items:
-                      const ['', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-                          .map(
-                            (v) => DropdownMenuItem(
-                              value: v,
-                              child: Text(v.isEmpty ? 'All' : v),
-                            ),
-                          )
-                          .toList(),
+                  items: [
+                    const DropdownMenuItem(value: '', child: Text('All')),
+                    ...dataCategories.map(
+                      (category) => DropdownMenuItem(
+                        value: category['value'].toString(),
+                        child: Text(category['label']),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(width: 16),
                 // Date picker + clear
