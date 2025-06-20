@@ -15,7 +15,7 @@ class AuthService {
     String password,
     String device,
   ) async {
-    final url = Uri.parse('https://skylist-api.vercel.app/api/api/auth/login');
+    final url = Uri.parse('https://skylist-app.vercel.app/api/api/auth/login');
     final body = jsonEncode({
       "username": username,
       "password": password,
@@ -76,7 +76,7 @@ class AuthService {
       throw {"message": "Token tidak ditemukan, mungkin belum login"};
     }
 
-    final url = Uri.parse('https://skylist-api.vercel.app/api/api/auth/logout');
+    final url = Uri.parse('https://skylist-app.vercel.app/api/api/auth/logout');
 
     try {
       final response = await http.get(

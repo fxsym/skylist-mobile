@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String API_URL = "https://skylist-api.vercel.app/api/api";
+const String API_URL = "https://skylist-app.vercel.app/api/api";
 
 class TodoService {
   // Get list of todos

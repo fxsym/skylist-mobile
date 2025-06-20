@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  static const String API_URL = "https://skylist-api.vercel.app/api/api";
+  static const String API_URL = "https://skylist-app.vercel.app/api/api";
 
   // Register User
   static Future<Map<String, dynamic>> registerUser(
